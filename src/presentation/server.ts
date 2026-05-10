@@ -1,5 +1,13 @@
+import { LogRepository } from "../domain/repository/log.repository";
 import { CheckService } from "../domain/use-cases/checks/check-service";
+import { FileSystemDatasource } from "../infrastructure/datasources/file-system.datasource";
+import { LogRepositoryImpl } from "../infrastructure/repositories/log.repository.impl";
 import { CronSerivce } from "./cron/cron-service";
+
+const fileSystemLogRepository = new LogRepositoryImpl(
+  new FileSystemDatasource,
+
+)
 
 export class Server {
   public static start() {
@@ -8,10 +16,12 @@ export class Server {
     CronSerivce.createJob(
         '*/4 * * * * *',
         () =>{
-            const url = 'https://google.com'
+            const url = 'https://googl12e.com'
            new CheckService(
+            fileSystemLogRepository,
             () => console.log(`${url} is ok`),
-            (error) => console.log(error)
+            (error) => console.log(error),
+
            ).execute(url);
         }
     );
