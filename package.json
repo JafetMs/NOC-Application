@@ -4,7 +4,7 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "dev": "bun --watch src/app.ts",
+    "dev": "bun --watch --clear-screen src/app.ts",
     "build": "rimraf ./dist && tsc",
     "start": "bun src/app.ts"
   },
@@ -23,6 +23,7 @@
     "dotenv": "^17.4.2",
     "env-var": "^7.5.0",
     "json-server": "^1.0.0-beta.15",
+    "mongoose": "^9.6.2",
     "nodemailer": "^8.0.7"
   }
 }

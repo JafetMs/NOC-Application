@@ -5,7 +5,7 @@ interface CheckServiceUseCase {
   execute(url: string): Promise<boolean>;
 }
 
-const origin: string = 'check-serice-ts';
+const origin: string = 'check-service-ts';
 type SuccesCallback = (() => void) | undefined;
 
 type ErrorCallback = ((error: string) => void) | undefined;

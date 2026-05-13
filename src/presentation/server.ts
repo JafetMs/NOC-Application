@@ -4,9 +4,13 @@ import { FileSystemDatasource } from "../infrastructure/datasources/file-system.
 import { CronSerivce } from "./cron/cron-service";
 import { EmailService } from "./email/email.service";
 import { SendEmailLogs } from '../domain/use-cases/email/send-email-logs';
+import { MongoLogDatasource } from '../infrastructure/datasources/mongo-log.datasource';
+import { CheckService } from '../domain/use-cases/checks/check-service';
+import { LogSeverityLevel } from '../domain/entities/log.entity';
 
-const fileSystemLogRepository = new LogRepositoryImpl(
+const logRepository = new LogRepositoryImpl(
   new FileSystemDatasource,
+  // new MongoLogDatasource
 
 )
 
@@ -14,30 +18,31 @@ const emailService = new EmailService();
 
 export class Server {
 
-  public static start() {
+  public static async start() {
 
-   console.log(`Server started`);
+   console.log(`Server started..`);
 
-    new SendEmailLogs(
-      emailService, 
-      fileSystemLogRepository
-    )
-    .execute(['alexcero_@hotmail.com'])
+    // new SendEmailLogs(
+    //   emailService, 
+    //   fileSystemLogRepository
+    // )
+    // .execute(['alexcero_@hotmail.com'])
 
+    const logs = await logRepository.getLogs(LogSeverityLevel.high);
+    console.log(logs)
 
+    // CronSerivce.createJob(
+    //     '*/5 * * * * *',
+    //     () =>{
+    //         const url = envs.URL;
+    //        new CheckService(
+    //         logRepository,
+    //         () => console.log(`${url} is ok`),
+    //         (error) => console.log(error),
 
-  //   CronSerivce.createJob(
-  //       '*/4 * * * * *',
-  //       () =>{
-  //           const url = envs.URL;
-  //          new CheckService(
-  //           fileSystemLogRepository,
-  //           () => console.log(`${url} is ok`),
-  //           (error) => console.log(error),
-
-  //          ).execute(url);
-  //       }
-  //   );
+    //        ).execute(url);
+    //     }
+    // );
   };
   
   
